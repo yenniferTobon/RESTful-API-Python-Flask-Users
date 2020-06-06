@@ -1,0 +1,4 @@
+#sudo pip install virtualenv
+#.venv/bin/activate
+#sudo install python3
+#sudo pip install Flask
