@@ -34,7 +34,6 @@ def getUserByUsername(username):
 @app.route('/users', methods=["POST"])       #Peticion post que crea un usuario
 def addUser():
     body = json.loads(request.data)
-    print(body)
     user = body["Username"]
     passw = body["Password"]
 
@@ -44,9 +43,45 @@ def addUser():
     }
 
     users.append(newUser)
-    l = jsonify(newUser)
-    print(l)
-    return l, 200
+    return jsonify(newUser), 200
 
+# borrar usuarios
+@app.route('/users/<string:username>', methods=['DELETE'])
+def deleteUser(username):
+    userFound = None
+    for index, user in enumerate(users):
+        print(index)
+        if user['Username'] == username:
+            userFound = user
+            users.pop(index)
+    
+    if userFound is not None:
+        return 'User Deleted', 200
+    else:
+        return 'User not found', 404
+
+#actualizar un usuario
+
+@app.route('/users/<string:username>', methods=['PUT'])
+def updateUser(username):
+    userUpdate = None
+    for index, user in enumerate(users):
+        if user['Username'] == username:
+            userUpdate = user
+            body = json.loads(request.data)
+            newUser = body["Username"]
+            newPassw = body["Password"]
+
+            updatedUser = {
+            "Username": newUser,
+            "Password": newPassw
+            }
+            users[index] = updatedUser
+    
+    if userUpdate is not None:
+        return 'User Updated', 200
+    else:
+        return 'User not Found', 404
+        
 if __name__ == "__main__":
     app.run(debug=True)
