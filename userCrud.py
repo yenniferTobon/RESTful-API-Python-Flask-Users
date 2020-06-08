@@ -3,7 +3,7 @@ from flask import jsonify  #jsonify libreria q convierte de Object Json a un for
 from flask import request   # libreria para poder obtener la peticion
 import json   # loads libreria q convierte String a Object json(diccionario), dumps lo contrario  
 
-app = Flask(__name__)
+app = Flask(__name__)      # servidor web por defecto corre por el 5000
 
 users = [
     {
@@ -16,7 +16,7 @@ users = [
     }
 ]
 #lectura de usuarios
-@app.route('/users', methods=["GET"])       #Peticion Get a la ruta /users retorna todos los usuarios
+@app.route('/users', methods=["GET"])       #Peticion Get a la ruta /users y el servidor app retorna todos los usuarios
 def getAllUsers():
     return jsonify(users), 200
 
@@ -29,6 +29,12 @@ def getUserByUsername(username):
     else:
         return "User not found", 404
 
+#otra manera de enviar y recibir parametros
+#http://localhost:5000/users?username1='Milena'
+#@app.route('/users')
+#def getUserByUsername():
+#    result = request.args.get('username1', 'valor por defecto')
+#    return jsonify(result), 200
 
 #crear usuarios
 @app.route('/users', methods=["POST"])       #Peticion post que crea un usuario
